@@ -21,11 +21,11 @@ composer require aigorlaxy/google-sheets-model-importer
 3. Include Aigorlaxy\GoogleSheetsModelImporter trait in your model class and use it.
 
 ```php
-use Aigorlaxy\GoogleSheetsModelImporter\GoogleSheetsModelImporter;
+use Aigorlaxy\GoogleSheetsModelImporter\GoogleSheetsModelImporterTrait;
 
 class YourModel extends Model
 {
-    use GoogleSheetsModelImporter;
+    use GoogleSheetsModelImporterTrait;
 
     // Your model code here
 }

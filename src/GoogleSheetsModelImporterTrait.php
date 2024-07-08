@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
 
-trait GoogleSheetsModelImporter
+trait GoogleSheetsModelImporterTrait
 {
     public function updateOrCreateFromGoogleSheets()
     {
