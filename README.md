@@ -32,14 +32,16 @@ class YourModel extends Model
 ```
 
 4. Set your antire spreadsheet id using your published Google Sheets link
-The link will look something like that: https://docs.google.com/spreadsheets/d/e/<$googleSpreadSheetId>/something-else
+The link will look something like that: https://docs.google.com/spreadsheets/d/e/YOU_GOOGLE_SHEET_SPREADSHEET_ID/something_else
 
 ```php
 protected string $googleSpreadSheetId = 'your_google_spreadsheet_id';
 ```
 
 5. Set your inside tab gid. If you have just one tab for that model, use the gid as a string. If you have more than one tab for the same model, use array. All models must match the same column schema to work.
-The link will look something like that: https://docs.google.com/spreadsheets/d/<$googleSpreadSheetId>/edit?gid=<$googleSheetId>
+The link will look something like that: 
+https://docs.google.com/spreadsheets/d/YOUR_SPREADSHEET_ID/edit?gid=YOUR_SHEET_ID
+
 
 ```php
 protected string|array $googleSheetId = 'your_google_sheet_id'; // or ['sheet1_gid', 'sheet2_gid']
