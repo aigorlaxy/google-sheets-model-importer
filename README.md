@@ -18,7 +18,7 @@ composer require aigorlaxy/google-sheets-model-importer
 
 2. Publish it to internet.
 
-3. Include Aigorlaxy\GoogleSheetsModelImporter trait in your model class and use it.
+3. Include the trait in your model class and use it.
 
 ```php
 use Aigorlaxy\GoogleSheetsModelImporter\GoogleSheetsModelImporterTrait;
