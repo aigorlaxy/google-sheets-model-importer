@@ -3,7 +3,7 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/aigorlaxy/google-sheets-model-importer.svg?style=flat-square)](https://packagist.org/packages/aigorlaxy/google-sheets-model-importer)
 [![Total Downloads](https://img.shields.io/packagist/dt/aigorlaxy/google-sheets-model-importer.svg?style=flat-square)](https://packagist.org/packages/aigorlaxy/google-sheets-model-importer)
 
-A simple trait to insert or update data to models from Google Sheets with just the link of the published spreadsheet. No need of Google API.
+A simple Laravel support trait to insert or update data to models from Google Sheets with just the link of the published spreadsheet. No need of Google API.
 
 ## Installation
 You can install the package via composer:
