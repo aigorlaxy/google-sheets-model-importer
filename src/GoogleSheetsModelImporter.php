@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits;
+namespace Aigorlaxy\GoogleSheetsModelImporter;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
