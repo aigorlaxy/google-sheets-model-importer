@@ -26,8 +26,6 @@ use Aigorlaxy\GoogleSheetsModelImporter\GoogleSheetsModelImporterTrait;
 class YourModel extends Model
 {
     use GoogleSheetsModelImporterTrait;
-
-    // Your model code here
 }
 ```
 
@@ -67,7 +65,7 @@ protected string|array $columnsToSkip = 'column_1'; // or ['column_1', 'column_2
 ```php
 $model = new YourModel();
 $model->updateOrCreateFromGoogleSheets(); // Updating and inserting new data.
-$model->getFreshTableFromGoogleSheets(true); // Truncating the current table and inserting the new data.
+$model->getFreshTableFromGoogleSheets(); // Truncating the current table and inserting the new data.
 ```
 
 9. Any issue or suggestions, please send me an e-mail: igor1523@gmail.com
