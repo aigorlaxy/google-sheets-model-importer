@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
 
-trait HasGoogleSheets
+trait GoogleSheetsModelImporter
 {
     public function updateOrCreateFromGoogleSheets()
     {
@@ -109,7 +109,7 @@ trait HasGoogleSheets
         return is_array($this->googleSheetId) ? $this->googleSheetId : [$this->googleSheetId];
     }
 
-    protected function initializeHasGoogleSheets()
+    protected function initializeglGoogleSheetsModelImporter()
     {
         $this->checkGoogleSheetsProperties();
     }
