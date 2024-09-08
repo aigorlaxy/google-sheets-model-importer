@@ -18,54 +18,37 @@ composer require aigorlaxy/google-sheets-model-importer
 
 2. Publish it to internet and set general access to anyone with the link can be a viewer.
 
-3. Include the trait in your model class and use it.
+3. Include the class in your model class and use it.
 
 ```php
-use Aigorlaxy\GoogleSheetsModelImporter\GoogleSheetsModelImporterTrait;
-
-class YourModel extends Model
-{
-    use GoogleSheetsModelImporterTrait;
-}
+use Aigorlaxy\GoogleSheetsModelImporter\GoogleSheetsModelImporter;
 ```
 
-4. Set your antire spreadsheet id using your published Google Sheets link
+4. To create a instance of that class, you will need your target model, your googleSpreadSheetId and your specfic tab sheet2_gid.
+
+5. To get your entire spreadsheet id using your published Google Sheets link
 The link will look something like that: https://docs.google.com/spreadsheets/d/e/YOU_GOOGLE_SHEET_SPREADSHEET_ID/something_else
 
-```php
-protected string $googleSpreadSheetId = 'your_google_spreadsheet_id';
-```
-
-5. Set your inside tab gid. If you have just one tab for that model, use the gid as a string. If you have more than one tab for the same model, use array. All models must match the same column schema to work.
+6. To get your specific sheetId, follow this instructions: If you have just one tab for that model, use the gid as a string. If you have more than one tab for the same model, use array. All models must match the same column schema to work.
 The link will look something like that: 
 https://docs.google.com/spreadsheets/d/YOUR_SPREADSHEET_ID/edit?gid=YOUR_SHEET_ID
 
-
+7. Create a instance of the class.
 ```php
-protected string|array $googleSheetId = 'your_google_sheet_id'; // or ['sheet1_gid', 'sheet2_gid']
+$googleSheetModelImpoter = new GoogleSheetModelImpter(Model $model, string $googleSpreadSheetId, string $googleSheetId, array $colunsToSkip = null, $updateColumnIndex = null);
 
-```
+6. $updateColumnIndex: Optionaly you can set a different primary key to check for updates. if your primary key is not default id or you want to track updates based on another column. If not set, it will assume that id column is your primary key.
 
-6. Optionaly you can set a different primary key to check for updates. if your primary key is not default id or you want to track updates based on another column. If not set, it will assume that id column is your primary key.
+7. $colunsToSkip: You can also optionaly set columns to be skipped. The app will search for columns that contains any of that strings and will skip the import for that ones. You can set a single string or an array.
 
+8. Example of usage:
 ```php
-protected string $updateColumnIndex = 'your_column_index';
+$model = User::class;
+$googleSpreadSheetId = '1gaLFuSnh20kggxEaasr511s15vt3olKqp9o12HenDLI3vA7pg';
+$sheetId = '15144122';
+$googleSheetModelImpoter = new GoogleSheetModelImpter($model, $googleSpreadSheetId, $googleSheetId, $colunsToSkip, $updateColumnIndex);
 
+$googleSheetModelImpoter->updateOrCreateFromGoogleSheets(); // Updating and inserting new data.
+$googleSheetModelImpoter->getFreshTableFromGoogleSheets(); // Truncating the current table and inserting the new data.
 ```
-
-7. You can also optionaly set columns to be skipped. The app will search for columns that contains any of that strings and will skip the import for that ones. You can set a single string or an array.
-
-```php
-protected string|array $columnsToSkip = 'column_1'; // or ['column_1', 'column_2']
-
-```
-
-8. Create a new object of the model and run any of the available methods.
-
-```php
-$model = new YourModel();
-$model->updateOrCreateFromGoogleSheets(); // Updating and inserting new data.
-$model->getFreshTableFromGoogleSheets(); // Truncating the current table and inserting the new data.
-```
-
 9. Any issue or suggestions, please send me an e-mail: igor1523@gmail.com

@@ -4,10 +4,28 @@ namespace Aigorlaxy\GoogleSheetsModelImporter;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
-
-
-trait GoogleSheetsModelImporterTrait
+use Illuminate\Database\Eloquent\Model;
+class GoogleSheetsModelImporter
 {
+    protected $googleSpreadSheetId;
+    protected $googleSheetId;
+    protected $columnsToSkip;
+    protected $updateColumnIndex;
+    protected $model;
+    public function __construct(Model $model, string $googleSpreadSheetId, string $googleSheetId, $columnsToSkip = null, $updateColumnIndex = null)
+    {
+        $this->model = $model;
+        $this->googleSpreadSheetId = $googleSpreadSheetId;
+        $this->googleSheetId = $googleSheetId;
+        $this->columnsToSkip = $columnsToSkip;
+        $this->updateColumnIndex = $updateColumnIndex;
+    }
+    public function getFreshTableFromGoogleSheets()
+    {
+        $this->model->truncate();
+        $this->updateOrCreateFromGoogleSheets();
+    }
+
     public function updateOrCreateFromGoogleSheets()
     {
         $googleSpreadSheetCsvLinks = $this->getGoogleSpreadSheetCsvLinks();
@@ -17,12 +35,6 @@ trait GoogleSheetsModelImporterTrait
             $csvData = $this->parseCsv($googleSheetsCsvPath);
             $this->createModel($csvData);
         }
-    }
-
-    public function getFreshTableFromGoogleSheets()
-    {
-        self::truncate();
-        $this->updateOrCreateFromGoogleSheets();
     }
     private function getGoogleSpreadSheetCsvLinks()
     {
@@ -90,7 +102,7 @@ trait GoogleSheetsModelImporterTrait
                 return in_array($key, $filteredHeaders);
             }, ARRAY_FILTER_USE_KEY);
 
-            $createdRows[] = self::updateOrCreate([$updateColumnIndex => $filteredRow[$updateColumnIndex]], $filteredRow);
+            $createdRows[] = $this->model->updateOrCreate([$updateColumnIndex => $filteredRow[$updateColumnIndex]], $filteredRow);
         }
         return $createdRows;
     }
@@ -109,18 +121,4 @@ trait GoogleSheetsModelImporterTrait
         return is_array($this->googleSheetId) ? $this->googleSheetId : [$this->googleSheetId];
     }
 
-    protected function initializeglGoogleSheetsModelImporter()
-    {
-        $this->checkGoogleSheetsProperties();
-    }
-
-    private function checkGoogleSheetsProperties()
-    {
-        $requiredProperties = ['googleSpreadSheetId', 'googleSheetId'];
-        foreach ($requiredProperties as $property) {
-            if (!property_exists($this, $property)) {
-                throw new \Exception("Class " . get_class($this) . " must define the \${$property} property.");
-            }
-        }
-    }
 }
