@@ -36,6 +36,7 @@ https://docs.google.com/spreadsheets/d/YOUR_SPREADSHEET_ID/edit?gid=YOUR_SHEET_I
 7. Create a instance of the class.
 ```php
 $googleSheetModelImpoter = new GoogleSheetModelImpter(Model $model, string $googleSpreadSheetId, string $googleSheetId, array $colunsToSkip = null, $updateColumnIndex = null);
+```
 
 6. $updateColumnIndex: Optionaly you can set a different primary key to check for updates. if your primary key is not default id or you want to track updates based on another column. If not set, it will assume that id column is your primary key.
 
