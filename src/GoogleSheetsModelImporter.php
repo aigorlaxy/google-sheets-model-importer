@@ -20,7 +20,7 @@ class GoogleSheetsModelImporter
     }
     public function getFreshTable()
     {
-        $this->model->truncate();
+        $this->model::truncate();
         $this->updateOrCreate();
     }
 
@@ -79,10 +79,11 @@ class GoogleSheetsModelImporter
     private function createModel($csvData, $update = true)
     {
         $headers = array_keys($csvData[0]);
+        
         if ($this->getColumnsToSkip()) {
             $filteredHeaders = array_filter($headers, function ($header) {
                 foreach ($this->columnsToSkip as $columnToSkip) {
-                    if (strpos($header, $columnToSkip) !== false) {
+                    if ($header == $columnToSkip) {  // Check if the header is equal to columnToSkip
                         return false;
                     }
                 }
@@ -100,7 +101,7 @@ class GoogleSheetsModelImporter
                 }, ARRAY_FILTER_USE_KEY);
             }
 
-            $createdRows[] = $this->model->updateOrCreate([$updateColumnIndex => $filteredRow[$updateColumnIndex]], $filteredRow);
+            $createdRows[] = $this->model::updateOrCreate([$updateColumnIndex => $filteredRow[$updateColumnIndex]], $filteredRow);
         }
         return $createdRows;
     }
