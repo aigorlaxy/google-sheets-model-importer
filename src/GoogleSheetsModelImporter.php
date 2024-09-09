@@ -79,9 +79,7 @@ class GoogleSheetsModelImporter
     private function createModel($csvData, $update = true)
     {
         $headers = array_keys($csvData[0]);
-
         if ($this->getColumnsToSkip()) {
-
             $filteredHeaders = array_filter($headers, function ($header) {
                 foreach ($this->columnsToSkip as $columnToSkip) {
                     if (strpos($header, $columnToSkip) !== false) {
@@ -96,9 +94,11 @@ class GoogleSheetsModelImporter
         $updateColumnIndex = $this->updateColumnIndex ?? 'id';
 
         foreach ($csvData as $row) {
-            $filteredRow = array_filter($row, function ($key) use ($filteredHeaders) {
-                return in_array($key, $filteredHeaders);
-            }, ARRAY_FILTER_USE_KEY);
+            if (count($filteredHeaders)) {
+                $filteredRow = array_filter($row, function ($key) use ($filteredHeaders) {
+                    return in_array($key, $filteredHeaders);
+                }, ARRAY_FILTER_USE_KEY);
+            }
 
             $createdRows[] = $this->model->updateOrCreate([$updateColumnIndex => $filteredRow[$updateColumnIndex]], $filteredRow);
         }
