@@ -18,13 +18,13 @@ class GoogleSheetsModelImporter
         $this->googleSpreadSheetId = $googleSpreadSheetId;
         $this->googleSheetId = $googleSheetId;
     }
-    public function getFreshTableFromGoogleSheets()
+    public function getFreshTable()
     {
         $this->model->truncate();
-        $this->updateOrCreateFromGoogleSheets();
+        $this->updateOrCreate();
     }
 
-    public function updateOrCreateFromGoogleSheets()
+    public function updateOrCreate()
     {
         $googleSpreadSheetCsvLinks = $this->getGoogleSpreadSheetCsvLinks();
         foreach ($googleSpreadSheetCsvLinks as $googleSpreadSheetCsvLink) {
