@@ -7,18 +7,16 @@ use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 class GoogleSheetsModelImporter
 {
+    protected $model;
     protected $googleSpreadSheetId;
     protected $googleSheetId;
-    protected $columnsToSkip;
-    protected $updateColumnIndex;
-    protected $model;
-    public function __construct(Model $model, string $googleSpreadSheetId, string $googleSheetId, $columnsToSkip = null, $updateColumnIndex = null)
+    public $columnsToSkip;
+    public $updateColumnIndex;
+    public function __construct(Model $model, string $googleSpreadSheetId, string $googleSheetId)
     {
         $this->model = $model;
         $this->googleSpreadSheetId = $googleSpreadSheetId;
         $this->googleSheetId = $googleSheetId;
-        $this->columnsToSkip = $columnsToSkip;
-        $this->updateColumnIndex = $updateColumnIndex;
     }
     public function getFreshTableFromGoogleSheets()
     {
