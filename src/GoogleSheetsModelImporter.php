@@ -78,31 +78,42 @@ class GoogleSheetsModelImporter
 
     private function createModel($csvData, $update = true)
     {
+        // Get the headers from the first row of CSV data
         $headers = array_keys($csvData[0]);
-        
+
+        // Check if there are columns to skip, if not, use all headers
         if ($this->getColumnsToSkip()) {
             $filteredHeaders = array_filter($headers, function ($header) {
                 foreach ($this->columnsToSkip as $columnToSkip) {
-                    if ($header == $columnToSkip) {  // Check if the header is equal to columnToSkip
+                    if ($header == $columnToSkip) {
                         return false;
                     }
                 }
                 return true;
             });
+        } else {
+            // No columns to skip, use all headers
+            $filteredHeaders = $headers;
         }
 
         $createdRows = [];
         $updateColumnIndex = $this->updateColumnIndex ?? 'id';
 
         foreach ($csvData as $row) {
+            // If filtered headers exist, filter the row by those headers
             if (count($filteredHeaders)) {
                 $filteredRow = array_filter($row, function ($key) use ($filteredHeaders) {
                     return in_array($key, $filteredHeaders);
                 }, ARRAY_FILTER_USE_KEY);
+            } else {
+                // If no headers are filtered, use the entire row
+                $filteredRow = $row;
             }
 
+            // Create or update the model instance
             $createdRows[] = $this->model::updateOrCreate([$updateColumnIndex => $filteredRow[$updateColumnIndex]], $filteredRow);
         }
+
         return $createdRows;
     }
 
