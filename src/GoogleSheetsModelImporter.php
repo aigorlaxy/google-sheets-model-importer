@@ -12,11 +12,12 @@ class GoogleSheetsModelImporter
     protected $googleSheetId;
     public $columnsToSkip;
     public $updateColumnIndex;
-    public function __construct(Model $model, string $googleSpreadSheetId, string $googleSheetId)
+    public function __construct(Model $model, string $googleSpreadSheetId, string $googleSheetId, string $updateColumnIndex = null)
     {
         $this->model = $model;
         $this->googleSpreadSheetId = $googleSpreadSheetId;
         $this->googleSheetId = $googleSheetId;
+        $this->updateColumnIndex = $updateColumnIndex;
     }
     public function getFreshTable()
     {
