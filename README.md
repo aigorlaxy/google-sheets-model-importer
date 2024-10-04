@@ -22,7 +22,7 @@ composer require aigorlaxy/google-sheets-model-importer
 
 4. To create a instance of that class, you will need your target model, your googleSpreadSheetId and your specfic tab sheet2_gid.
 
-5. To get your entire spreadsheet id using your published Google Sheets link
+5. To get your entire spreadsheet id using your published Google Sheets linkw
 The link will look something like that: https://docs.google.com/spreadsheets/d/e/YOU_GOOGLE_SHEET_SPREADSHEET_ID/something_else
 
 6. To get your specific sheetId, follow this instructions: If you have just one tab for that model, use the gid as a string. If you have more than one tab for the same model, use array. All models must match the same column schema to work.
