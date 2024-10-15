@@ -12,12 +12,13 @@ class GoogleSheetsModelImporter
     protected $googleSheetId;
     public $columnsToSkip;
     public $updateColumnIndex;
-    public function __construct(Model $model, string $googleSpreadSheetId, string $googleSheetId, string $updateColumnIndex = null)
+    public function __construct(Model $model, string $googleSpreadSheetId, string $googleSheetId, array $columnsToSkip, string $updateColumnIndex = null)
     {
         $this->model = $model;
         $this->googleSpreadSheetId = $googleSpreadSheetId;
         $this->googleSheetId = $googleSheetId;
         $this->updateColumnIndex = $updateColumnIndex;
+        $this->columnsToSkip = $columnsToSkip;
     }
     public function getFreshTable()
     {
@@ -86,8 +87,10 @@ class GoogleSheetsModelImporter
         if ($this->getColumnsToSkip()) {
             $filteredHeaders = array_filter($headers, function ($header) {
                 foreach ($this->columnsToSkip as $columnToSkip) {
-                    if ($header == $columnToSkip) {
-                        return false;
+                    if (Str::contains($columnToSkip, '*')) {
+                        return !Str::contains($header, Str::replace('*', '', $columnToSkip));
+                    } else {
+                        return $header != $columnToSkip;
                     }
                 }
                 return true;
@@ -111,12 +114,20 @@ class GoogleSheetsModelImporter
                 $filteredRow = $row;
             }
 
+            // Convert empty strings to null
+            foreach ($filteredRow as $key => $value) {
+                if ($value === '') {
+                    $filteredRow[$key] = null;
+                }
+            }
+
             // Create or update the model instance
             $createdRows[] = $this->model::updateOrCreate([$updateColumnIndex => $filteredRow[$updateColumnIndex]], $filteredRow);
         }
 
         return $createdRows;
     }
+
 
     private function getSpreadSheetId()
     {
