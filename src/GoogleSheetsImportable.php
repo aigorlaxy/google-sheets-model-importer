@@ -8,31 +8,21 @@ use Illuminate\Support\Facades\Storage;
 
 trait GoogleSheetsImportable
 {
-    public static function importFromGoogleSheets(
-        string $spreadsheetId,
-        array|string $sheetIds,
-        array $columnsToSkip = [],
-        ?string $updateColumnIndex = 'id'
-    ): void {
-        static::updateOrCreateFromGoogleSheets($spreadsheetId, $sheetIds, $columnsToSkip, $updateColumnIndex);
-    }
-
     public static function updateOrCreateFromGoogleSheets(
         string $spreadsheetId,
         array|string $sheetIds,
         array $columnsToSkip = [],
         ?string $updateColumnIndex = 'id'
-    ): void {
+    ): string {
         $model = new static;
         $sheetIds = is_array($sheetIds) ? $sheetIds : [$sheetIds];
 
         foreach ($sheetIds as $sheetId) {
             $url = "https://docs.google.com/spreadsheets/d/{$spreadsheetId}/export?format=csv&gid={$sheetId}";
             $response = Http::get($url)->body();
-
-            $filename = Str::slug(class_basename(static::class)) . '-' . now()->format('Y-m-d-H-i-s') . '.csv';
-            $path = storage_path('app/temp/' . $filename);
-            Storage::put("temp/{$filename}", $response);
+            $filename = Str::slug(class_basename(static::class));
+            $path = storage_path("app/temp/{$filename}");
+            file_put_contents($path, $response);
 
             $rows = self::parseCsv($path, $columnsToSkip);
 
@@ -42,9 +32,9 @@ trait GoogleSheetsImportable
                     self::normalizeNulls($row)
                 );
             }
-
             Storage::delete("temp/{$filename}");
         }
+        return 'Successfully imported data from Google Sheets.';
     }
 
     public static function getFreshTableFromGoogleSheets(
@@ -52,9 +42,10 @@ trait GoogleSheetsImportable
         array|string $sheetIds,
         array $columnsToSkip = [],
         ?string $updateColumnIndex = 'id'
-    ): void {
+    ): string {
         static::truncate();
         static::updateOrCreateFromGoogleSheets($spreadsheetId, $sheetIds, $columnsToSkip, $updateColumnIndex);
+        return 'Successfully imported data from Google Sheets.';
     }
 
     protected static function parseCsv(string $path, array $columnsToSkip): array
