@@ -14,8 +14,16 @@ trait GoogleSheetsImportable
         array $columnsToSkip = [],
         ?string $updateColumnIndex = 'id'
     ): void {
-        $model = new static;
+        static::updateOrCreateFromGoogleSheets($spreadsheetId, $sheetIds, $columnsToSkip, $updateColumnIndex);
+    }
 
+    public static function updateOrCreateFromGoogleSheets(
+        string $spreadsheetId,
+        array|string $sheetIds,
+        array $columnsToSkip = [],
+        ?string $updateColumnIndex = 'id'
+    ): void {
+        $model = new static;
         $sheetIds = is_array($sheetIds) ? $sheetIds : [$sheetIds];
 
         foreach ($sheetIds as $sheetId) {
@@ -31,12 +39,22 @@ trait GoogleSheetsImportable
             foreach ($rows as $row) {
                 $model::updateOrCreate(
                     [$updateColumnIndex => $row[$updateColumnIndex] ?? null],
-                    $row
+                    self::normalizeNulls($row)
                 );
             }
 
             Storage::delete("temp/{$filename}");
         }
+    }
+
+    public static function getFreshTableFromGoogleSheets(
+        string $spreadsheetId,
+        array|string $sheetIds,
+        array $columnsToSkip = [],
+        ?string $updateColumnIndex = 'id'
+    ): void {
+        static::truncate();
+        static::updateOrCreateFromGoogleSheets($spreadsheetId, $sheetIds, $columnsToSkip, $updateColumnIndex);
     }
 
     protected static function parseCsv(string $path, array $columnsToSkip): array
@@ -61,4 +79,16 @@ trait GoogleSheetsImportable
 
         return $data;
     }
+
+    protected static function normalizeNulls(array $row): array
+    {
+        foreach ($row as $key => $value) {
+            if ($value === '') {
+                $row[$key] = null;
+            }
+        }
+
+        return $row;
+    }
 }
+
