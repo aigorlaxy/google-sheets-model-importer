@@ -22,6 +22,7 @@ composer require aigorlaxy/google-sheets-model-importer
 
 4. To use that use importFromGoogleSheets:
    ```php
+   Use the trait GoogleSheetsImportable.
    Model::importFromGoogleSheets(string $spreadsheetId, array|string $sheetIds, array $columnsToSkip = [], ?string $updateColumnIndex = 'id')
    ```
 5. $spreadsheetId: is the id of your google sheets. You will use your published Google Sheets link to get it.
