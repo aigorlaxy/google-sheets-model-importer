@@ -36,7 +36,7 @@ $model = User::class;
 $googleSpreadSheetId = '1gaLFuSnh20kggxEaasr511s15vt3olKqp9o12HenDLI3vA7pg';
 $sheetId = '15144122';
 
-Model::getFreshTableFromGoogleSheets($spreadsheetId, $sheetIds); // Truncate the current table and inserting the new data.
-Model::updateOrCreateFromGoogleSheets($spreadsheetId, $sheetIds); // Updating and inserting new data.
+$model::getFreshTableFromGoogleSheets($spreadsheetId, $sheetIds); // Truncate the current table and inserting the new data.
+$model::updateOrCreateFromGoogleSheets($spreadsheetId, $sheetIds); // Updating and inserting new data.
 ```
 10. Any issue or suggestions, please send me an e-mail: igor1523@gmail.com
