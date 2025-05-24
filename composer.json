@@ -1,21 +1,21 @@
 {
-  "name": "aigorlaxy/google-sheets-model-importer",
-  "description": "A simple trait to insert or update data to models from Google Sheets with just the link of the published spreadsheet. No need of Google API.",
-  "type": "library",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Igor Borges",
-      "email": "igor1523@gmail.com"
+    "name": "aigorlaxy/google-sheets-model-importer",
+    "description": "A simple trait to insert or update data to models from Google Sheets with just the link of the published spreadsheet. No need of Google API.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Igor Borges",
+            "email": "igor1523@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.3|^8.0",
+        "illuminate/support": "^8 || ^9 || ^10 || ^11 || ^12"
+    },
+    "autoload": {
+        "psr-4": {
+            "Aigorlaxy\\GoogleSheetsModelImporter\\": "src/"
+        }
     }
-  ],
-  "require": {
-    "php": "^7.3|^8.0",
-    "illuminate/support": "^8.0|^9.0|^10.0"
-  },
-  "autoload": {
-    "psr-4": {
-      "Aigorlaxy\\GoogleSheetsModelImporter\\": "src/"
-    }
-  }
 }
