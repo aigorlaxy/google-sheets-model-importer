@@ -20,19 +20,29 @@ trait GoogleSheetsImportable
         foreach ($sheetIds as $sheetId) {
             $url = "https://docs.google.com/spreadsheets/d/{$spreadsheetId}/export?format=csv&gid={$sheetId}";
             $response = Http::get($url)->body();
-            $filename = Str::slug(class_basename(static::class));
-            $path = storage_path("app/temp/{$filename}");
-            file_put_contents($path, $response);
 
-            $rows = self::parseCsv($path, $columnsToSkip);
+            $filename = Str::slug(class_basename(static::class)) . '.csv';
+            $path = "temp/{$filename}";
 
-            foreach ($rows as $row) {
-                $model::updateOrCreate(
-                    [$updateColumnIndex => $row[$updateColumnIndex] ?? null],
-                    self::normalizeNulls($row)
-                );
-            }
-            Storage::delete("temp/{$filename}");
+            // Cria o diretório se não existir
+            Storage::makeDirectory('temp');
+
+            // Salva o arquivo diretamente usando Storage
+            Storage::put($path, $response);
+
+            // Lê o conteúdo via Storage (opcional, caso você precise trabalhar com o conteúdo do arquivo depois)
+            $fullPath = Storage::path($path);
+            $rows = self::parseCsv($fullPath, $columnsToSkip);
+
+                foreach ($rows as $row) {
+                    $model::updateOrCreate(
+                        [$updateColumnIndex => $row[$updateColumnIndex] ?? null],
+                        self::normalizeNulls($row)
+                    );
+                }
+
+            Storage::delete($path);
+
         }
         return 'Successfully imported data from Google Sheets.';
     }
