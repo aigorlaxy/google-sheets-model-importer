@@ -24,13 +24,10 @@ trait GoogleSheetsImportable
             $filename = Str::slug(class_basename(static::class)) . '.csv';
             $path = "temp/{$filename}";
 
-            // Cria o diretório se não existir
             Storage::makeDirectory('temp');
 
-            // Salva o arquivo diretamente usando Storage
             Storage::put($path, $response);
 
-            // Lê o conteúdo via Storage (opcional, caso você precise trabalhar com o conteúdo do arquivo depois)
             $fullPath = Storage::path($path);
             $rows = self::parseCsv($fullPath, $columnsToSkip);
 
