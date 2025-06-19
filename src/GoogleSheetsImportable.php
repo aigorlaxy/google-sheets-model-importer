@@ -55,28 +55,34 @@ trait GoogleSheetsImportable
         return 'Successfully imported data from Google Sheets.';
     }
 
-    protected static function parseCsv(string $path, array $columnsToSkip): array
-    {
-        $data = [];
-        if (($handle = fopen($path, 'r')) !== false) {
-            $headers = fgetcsv($handle, 1000, ',');
+protected static function parseCsv(string $path, array $columnsToSkip): array
+{
+    $data = [];
 
-            while (($row = fgetcsv($handle, 1000, ',')) !== false) {
-                $assoc = array_combine($headers, $row);
+    if (($handle = fopen($path, 'r')) !== false) {
+        $headers = fgetcsv($handle, 1000, ',');
 
-                // Remove skipped columns
+        while (($row = fgetcsv($handle, 1000, ',')) !== false) {
+            $assoc = array_combine($headers, $row);
+
+            foreach ($assoc as $key => $value) {
                 foreach ($columnsToSkip as $skip) {
-                    unset($assoc[$skip]);
+                    if (str_contains($key, $skip)) {
+                        unset($assoc[$key]);
+                        break;
+                    }
                 }
-
-                $data[] = $assoc;
             }
 
-            fclose($handle);
+            $data[] = $assoc;
         }
 
-        return $data;
+        fclose($handle);
     }
+
+    return $data;
+}
+
 
     protected static function normalizeNulls(array $row): array
     {
