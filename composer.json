@@ -10,7 +10,9 @@
         }
     ],
     "require": {
-        "php": "^8.3"
+        "php": "^8.3",
+        "illuminate/support": "^13",
+        "illuminate/database": "^13"
     },
     "autoload": {
         "psr-4": {
