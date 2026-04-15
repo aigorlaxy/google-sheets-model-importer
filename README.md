@@ -33,7 +33,7 @@ composer require aigorlaxy/google-sheets-model-importer
 use Illuminate\Database\Eloquent\Model;
 use Aigorlaxy\GoogleSheetsModelImporter\GoogleSheetsImportable;
 
-class YourMosel extends Model
+class YourModel extends Model
 {
 Use GoogleSheetsImportable;
 
