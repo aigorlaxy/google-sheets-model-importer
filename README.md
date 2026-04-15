@@ -30,7 +30,12 @@ composer require aigorlaxy/google-sheets-model-importer
 
 8. Example of usage:
 ```php
-Use GoogleSheetsImportable.
+use Illuminate\Database\Eloquent\Model;
+use Aigorlaxy\GoogleSheetsModelImporter\GoogleSheetsImportable;
+
+class YourMosel extends Model
+{
+Use GoogleSheetsImportable;
 
 $model = User::class;
 $googleSpreadSheetId = '1gaLFuSnh20kggxEaasr511s15vt3olKqp9o12HenDLI3vA7pg';
@@ -38,5 +43,6 @@ $sheetId = '15144122';
 
 $model::getFreshTableFromGoogleSheets($spreadsheetId, $sheetIds); // Truncate the current table and inserting the new data.
 $model::updateOrCreateFromGoogleSheets($spreadsheetId, $sheetIds); // Updating and inserting new data.
+}
 ```
 10. Any issue or suggestions, please send me an e-mail: igor1523@gmail.com
